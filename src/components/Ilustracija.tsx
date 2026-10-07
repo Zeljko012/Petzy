@@ -109,33 +109,31 @@ function Cinija({ gornji, donji, ime }: { gornji: string; donji: string; ime: st
 }
 
 /*
-  Kašičica za hranu (prema 3D modelu, pogled odozgo pod uglom):
-  duboka kašika sa obodom u obliku šape i ravna drška u obliku koske.
+  Kašičica za hranu, prema 3D modelu (pogled odozgo):
+  duboka kašika u obliku šape (dva velika srednja prsta, dva bočna, širok jastučić dlana)
+  i duga ravna drška u obliku koske. Crta se uspravno pa rotira, da drška ide udesno.
   "osnova" su zidovi, dno, obod drške i slova; "umetak" su jastučići i unutrašnjost koske.
 */
-const DLAN = { x: 138, y: 128, r: 72 };
-const PRSTI = [128, 162, 198, 232].map((ugao) => {
-  const rad = (ugao * Math.PI) / 180;
-  return { x: DLAN.x + 70 * Math.cos(rad), y: DLAN.y - 70 * Math.sin(rad), r: 38, ugao };
-});
-const DUBINA = 30;
-const DEBLJINA_ZIDA = 8;
-
-function Obris({ uvuceno = 0, fill }: { uvuceno?: number; fill: string }) {
-  return (
-    <g fill={fill}>
-      <circle cx={DLAN.x} cy={DLAN.y} r={DLAN.r - uvuceno} />
-      {PRSTI.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r={p.r - uvuceno} />
-      ))}
-    </g>
-  );
-}
+/* Unutrašnja ivica kašike (pre rotacije, centar šape u 0,0); obod se crta kao potez oko nje. */
+const SAPA =
+  "M0 86 C-20 96 -44 96 -56 84 C-76 90 -98 72 -92 44 C-88 30 -96 20 -100 0 C-110 -30 -92 -52 -66 -48 C-70 -78 -48 -100 -22 -96 C-12 -100 -4 -94 0 -86 C4 -94 12 -100 22 -96 C48 -100 70 -78 66 -48 C92 -52 110 -30 100 0 C96 20 88 30 92 44 C98 72 76 90 56 84 C44 96 20 96 0 86 Z";
 
 const DRSKA_SPOLJA =
-  "M204 116 Q238 130 262 130 L314 130 Q330 130 338 116 A24 24 0 1 1 372 150 A24 24 0 1 1 338 184 Q330 170 314 170 L262 170 Q238 170 204 184 Z";
+  "M-44 66 C-28 92 -18 120 -18 170 C-18 220 -24 250 -40 274 C-62 290 -30 324 -6 304 Q0 298 6 304 C30 324 62 290 40 274 C24 250 18 220 18 170 C18 120 28 92 44 66 Z";
 const DRSKA_UNUTRA =
-  "M222 125 Q244 137 262 137 L314 136 Q333 136 342 125 A16 16 0 1 1 363 150 A16 16 0 1 1 342 175 Q333 164 314 164 L262 163 Q244 163 222 175 Z";
+  "M-34 76 C-20 100 -11 124 -11 170 C-11 220 -17 252 -32 277 C-48 290 -28 312 -9 297 Q0 291 9 297 C28 312 48 290 32 277 C17 252 11 220 11 170 C11 124 20 100 34 76 Z";
+const JASTUCE_DLANA =
+  "M-60 36 C-62 4 -32 -8 0 -8 C32 -8 62 4 60 36 C58 58 46 68 31 62 C23 74 8 76 0 68 C-8 76 -23 74 -31 62 C-46 68 -58 58 -60 36 Z";
+const JASTUCI_PRSTIJU = [
+  { x: -26, y: -58, rx: 22, ry: 32, ugao: -6 },
+  { x: 26, y: -58, rx: 22, ry: 32, ugao: 6 },
+  { x: -75, y: -12, rx: 18, ry: 28, ugao: -20 },
+  { x: 75, y: -12, rx: 18, ry: 28, ugao: 20 },
+];
+
+const RAZMERA = 0.82;
+const DUBINA = 28;
+const ZID = 8;
 
 function Kasicica({ osnova, umetak, ime }: { osnova: string; umetak: string; ime: string }) {
   /* Ako su obe boje skoro iste svetline, ime ne bi moglo da se pročita; tada uzimamo kontrastnu. */
@@ -143,69 +141,88 @@ function Kasicica({ osnova, umetak, ime }: { osnova: string; umetak: string; ime
   const odnos = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   const slova = odnos >= 1.5 ? osnova : bojaImena(umetak);
   const zid = senka(osnova, 72);
-  const slojevi = Array.from({ length: DUBINA / 2 + 1 }, (_, i) => DUBINA - i * 2);
+
+  /* Uspravni crtež: šapa u 0,0, drška ide nadole do y≈318. Posle rotacije drška ide udesno. */
+  /* Dijagonalno, kao na fotografiji modela: šapa gore levo, drška ka dole desno. */
+  const UGAO = -60;
+  const cx = 124;
+  const cy = 104;
+  const t = (dy = 0, dx = 0) => `translate(${cx + dx} ${cy + dy}) rotate(${UGAO}) scale(${RAZMERA})`;
+  const rad = (UGAO * Math.PI) / 180;
+  const imeX = cx - 196 * RAZMERA * Math.sin(rad);
+  const imeY = cy + 196 * RAZMERA * Math.cos(rad);
+  const slojeviKasike = Array.from({ length: DUBINA / 2 + 1 }, (_, i) => DUBINA - i * 2);
+  const nivoDrske = DUBINA - 6;
+  const znakova = Math.max(Array.from(ime).length, 3);
 
   return (
-    <g transform="translate(14 0)">
+    <g>
       <defs>
         <clipPath id="kasicica-otvor">
-          <circle cx={DLAN.x} cy={DLAN.y} r={DLAN.r - DEBLJINA_ZIDA} />
-          {PRSTI.map((p, i) => (
-            <circle key={i} cx={p.x} cy={p.y} r={p.r - DEBLJINA_ZIDA} />
-          ))}
+          <path d={SAPA} transform={t()} />
         </clipPath>
       </defs>
 
-      {/* drška: tanka ploča sa uzdignutim obodom, spaja se sa dnom kašike */}
-      <g transform={`translate(0 ${DUBINA - 8})`}>
-        <path d={DRSKA_SPOLJA} fill={zid} transform="translate(0 7)" />
-        <path d={DRSKA_SPOLJA} fill={osnova} />
-        <path d={DRSKA_UNUTRA} fill={umetak} />
-        {ime && (
-          <text
-            x={290}
-            y={150}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontFamily="var(--font)"
-            fontWeight={800}
-            fontStyle="italic"
-            fontSize={Math.min(24, 118 / (Math.max(Array.from(ime).length, 3) * 0.56))}
-            fill={slova}
-          >
-            {ime}
-          </text>
-        )}
-      </g>
+      {/* drška: tanka ploča, niža od oboda kašike */}
+      <path d={DRSKA_SPOLJA} transform={t(nivoDrske + 6)} fill={zid} />
+      <path d={DRSKA_SPOLJA} transform={t(nivoDrske)} fill={osnova} />
+      <path d={DRSKA_UNUTRA} transform={t(nivoDrske)} fill={umetak} />
+      {ime && (
+        <text
+          x={imeX}
+          y={imeY + nivoDrske}
+          transform={`rotate(${UGAO + 90} ${imeX} ${imeY + nivoDrske})`}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily="var(--font)"
+          fontWeight={800}
+          fontStyle="italic"
+          fontSize={Math.min(19, 132 / (znakova * 0.56))}
+          fill={slova}
+        >
+          {ime}
+        </text>
+      )}
 
       {/* zidovi kašike: obris izvučen nadole */}
-      {slojevi.map((d) => (
-        <g key={d} transform={`translate(0 ${d})`}>
-          <Obris fill={d === DUBINA ? senka(osnova, 60) : zid} />
-        </g>
-      ))}
+      {slojeviKasike.map((d) => {
+        const boja = d === DUBINA ? senka(osnova, 60) : zid;
+        return (
+          <path
+            key={d}
+            d={SAPA}
+            transform={t(d)}
+            fill={boja}
+            stroke={boja}
+            strokeWidth={ZID * 2}
+            strokeLinejoin="round"
+          />
+        );
+      })}
 
-      {/* gornja ivica i pogled u unutrašnjost */}
-      <Obris fill={osnova} />
-      <Obris uvuceno={DEBLJINA_ZIDA} fill={senka(osnova, 64)} />
+      {/* obod i pogled u unutrašnjost */}
+      <path
+        d={SAPA}
+        transform={t()}
+        fill={senka(osnova, 66)}
+        stroke={osnova}
+        strokeWidth={ZID * 2}
+        strokeLinejoin="round"
+      />
       <g clipPath="url(#kasicica-otvor)">
-        <g transform={`translate(3 ${DUBINA - 14})`}>
-          <Obris uvuceno={DEBLJINA_ZIDA} fill={senka(osnova, 90)} />
-          <g fill={umetak}>
-            <path
-              d={`M${DLAN.x - 30} ${DLAN.y - 30} Q${DLAN.x + 22} ${DLAN.y - 52} ${DLAN.x + 40} ${DLAN.y - 8} Q${DLAN.x + 50} ${DLAN.y + 30} ${DLAN.x + 18} ${DLAN.y + 44} Q${DLAN.x - 12} ${DLAN.y + 54} ${DLAN.x - 34} ${DLAN.y + 30} Q${DLAN.x - 52} ${DLAN.y} ${DLAN.x - 30} ${DLAN.y - 30} Z`}
+        <path d={SAPA} transform={t(12)} fill={senka(osnova, 92)} />
+        <g fill={umetak}>
+          <path d={JASTUCE_DLANA} transform={`${t(12)} translate(0 42) scale(1.08) translate(0 -36)`} />
+          {JASTUCI_PRSTIJU.map((p, i) => (
+            <ellipse
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              rx={p.rx}
+              ry={p.ry}
+              transform={`${t(12)} rotate(${p.ugao} ${p.x} ${p.y})`}
             />
-            {PRSTI.map((p, i) => (
-              <ellipse
-                key={i}
-                cx={p.x + 2}
-                cy={p.y}
-                rx={20}
-                ry={25}
-                transform={`rotate(${90 - p.ugao} ${p.x + 2} ${p.y})`}
-              />
-            ))}
-          </g>
+          ))}
         </g>
       </g>
     </g>

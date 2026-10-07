@@ -1,69 +1,147 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { KarticaProizvoda } from "@/components/KarticaProizvoda";
+import { ProbniSto } from "@/components/ProbniSto";
+import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaNovac, IkonaSrce, IkonaStrelica } from "@/components/Ikonice";
+import { BESPLATNA_DOSTAVA_OD, PROIZVODI, nadjiProizvod } from "@/lib/katalog";
+import { SAVETI } from "@/lib/saveti";
+import { formatDatum, formatRSD } from "@/lib/format";
 
-export default function Home() {
+export default function Pocetna() {
+  const drzac = nadjiProizvod("drzac-cinija-rucak")!;
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <section className="hero">
+        <div className="omotac hero-mreza">
+          <div>
+            <h1>
+              Oprema koja nosi <em>ime</em> tvog najboljeg drugara
+            </h1>
+            <p className="hero-uvod">
+              Držači činija, kutijice i privesci sa imenom tvog psa ili mačke. Biraš boje, vidiš izgled odmah, a
+              mi ga pravimo baš za vas.
+            </p>
+            <div className="hero-akcije">
+              <Link href="/prodavnica" className="dugme dugme-sporedno">
+                Pogledaj sve proizvode
+              </Link>
+            </div>
+            <ul className="hero-cinjenice">
+              <li>
+                <IkonaKvacica /> Plaćaš pouzećem
+              </li>
+              <li>
+                <IkonaKvacica /> Izrada za 3 do 5 dana
+              </li>
+              <li>
+                <IkonaKvacica /> Ime i ćirilicom
+              </li>
+            </ul>
+          </div>
+          <ProbniSto proizvod={drzac} />
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="sekcija" aria-labelledby="kako-radi">
+        <div className="omotac">
+          <div className="sekcija-glava">
+            <h2 id="kako-radi">Od imena do vrata za nedelju dana</h2>
+          </div>
+          <ol className="koraci">
+            <li className="korak">
+              <h3>Upiši ime</h3>
+              <p>Do 12 slova, latinicom ili ćirilicom. Odmah vidiš kako izgleda na proizvodu.</p>
+            </li>
+            <li className="korak">
+              <h3>Izaberi boje</h3>
+              <p>Držači su iz dva dela: biraš boju gornjeg i donjeg dela, da se uklopi u tvoj dom.</p>
+            </li>
+            <li className="korak">
+              <h3>Mi pravimo, ti plaćaš kad stigne</h3>
+              <p>Izrađujemo po porudžbini i šaljemo kurirom. Plaćaš pouzećem, kuriru na vratima.</p>
+            </li>
+          </ol>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="sekcija" aria-labelledby="proizvodi">
+        <div className="omotac">
+          <div className="sekcija-glava">
+            <h2 id="proizvodi">Napravljeno za tvog ljubimca</h2>
+            <Link href="/prodavnica" className="link-strelica">
+              Svi proizvodi <IkonaStrelica />
+            </Link>
+          </div>
+          <div className="mreza-proizvoda">
+            {PROIZVODI.slice(0, 4).map((p, i) => (
+              <KarticaProizvoda key={p.slug} proizvod={p} redni={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="traka" aria-labelledby="zasto">
+        <div className="omotac traka-mreza">
+          <div>
+            <h2 id="zasto" className="vizuelno-skriveno">
+              Zašto Petzy
+            </h2>
+            <p className="citat">
+              Oprema za ljubimce je uglavnom bezlična plastika. <span>Mi pravimo stvari sa imenom,</span> koje
+              izgledaju lepo u tvom domu.
+            </p>
+          </div>
+          <ul className="traka-lista">
+            <li>
+              <IkonaKist />
+              <h3>Svaki komad se pravi po porudžbini</h3>
+              <p>Ne čeka u magacinu. Pre izrade proveravamo ime, a primerak koji nije savršen ne šaljemo.</p>
+            </li>
+            <li>
+              <IkonaNovac />
+              <h3>Plaćaš tek kad paket stigne</h3>
+              <p>Pouzećem, kuriru na vratima. Bez kartica i bez uplata unapred.</p>
+            </li>
+            <li>
+              <IkonaKamion />
+              <h3>Dostava na kućnu adresu</h3>
+              <p>Besplatna dostava za porudžbine od {formatRSD(BESPLATNA_DOSTAVA_OD)}.</p>
+            </li>
+            <li>
+              <IkonaSrce />
+              <h3>Saveti kojima možeš da veruješ</h3>
+              <p>Pišemo o nezi i dresuri, a za sve zdravstveno upućujemo na veterinara.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="sekcija" aria-labelledby="saveti">
+        <div className="omotac">
+          <div className="sekcija-glava">
+            <h2 id="saveti">Saveti iz komšiluka</h2>
+            <Link href="/saveti" className="link-strelica">
+              Svi saveti <IkonaStrelica />
+            </Link>
+          </div>
+          <ul className="lista-saveta">
+            {SAVETI.map((s) => (
+              <li key={s.slug}>
+                <Link href={`/saveti/${s.slug}`} className="savet-red">
+                  <span className="savet-tema">{s.tema}</span>
+                  <div>
+                    <h3>{s.naslov}</h3>
+                    <p>{s.uvod}</p>
+                  </div>
+                  <span className="savet-vreme">
+                    {formatDatum(s.datum)} · {s.minuta} min
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
   );
 }

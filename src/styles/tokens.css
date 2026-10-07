@@ -1,0 +1,76 @@
+/*
+  Petzy dizajn tokeni. Izvor istine: petzy-brend/tokens.css i petzy-brend/BRAND.md.
+  Razlika od izvora: font Nunito se ne uvozi preko Google Fonts @import, nego ga
+  next/font hostuje lokalno (latin, latin-ext, cyrillic) i izlaže kao --font-nunito.
+*/
+
+:root {
+  /* Brend boje */
+  --petzy-koral: #FF6B35;        /* glavna boja: znak, CTA dugmad, akcenti */
+  --petzy-koral-tamni: #B8461B;  /* koral za TEKST i linkove (čitljiv na kremu) */
+  --petzy-sunce: #FFC93C;        /* bedževi, popusti, istaknuto */
+  --petzy-tirkiz: #2EC4B6;       /* sekundarni akcenti, ikonice, ilustracije */
+  --petzy-teget: #1D3557;        /* glavni tekst, naslovi, tamne pozadine */
+  --petzy-krem: #FFF4E6;         /* glavna pozadina */
+  --petzy-belo: #FFFFFF;         /* kartice proizvoda */
+  --petzy-siva: #5B6B82;         /* sporedni tekst */
+
+  /* Uloge */
+  --bg: var(--petzy-krem);
+  --bg-kartica: var(--petzy-belo);
+  --tekst: var(--petzy-teget);
+  --tekst-sporedni: var(--petzy-siva);
+  --link: var(--petzy-koral-tamni);
+  --cta-pozadina: var(--petzy-koral);
+  --cta-tekst: var(--petzy-teget);
+
+  /* Izvedene nijanse (mešavine brend boja, bez novih hex vrednosti) */
+  --linija: color-mix(in oklab, var(--petzy-teget) 14%, transparent);
+  --linija-jaka: color-mix(in oklab, var(--petzy-teget) 28%, transparent);
+  --krem-tamniji: color-mix(in oklab, var(--petzy-krem) 88%, var(--petzy-koral));
+  --tirkiz-svetli: color-mix(in oklab, var(--petzy-tirkiz) 18%, var(--petzy-belo));
+  --sunce-svetlo: color-mix(in oklab, var(--petzy-sunce) 30%, var(--petzy-belo));
+  --greska: var(--petzy-koral-tamni);
+
+  /* Tipografija */
+  --font: var(--font-nunito), 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --tekst-osnovni: 1rem;      /* 16px */
+  --tekst-mali: 0.875rem;     /* 14px */
+  --tekst-veliki: 1.125rem;   /* 18px, dugmad i uvodni tekst */
+  --h3: 1.25rem;              /* 20px */
+  --h2: 1.75rem;              /* 28px */
+  --h1: 2rem;                 /* 32px na mobilnom, 40px od 768px */
+
+  /* Oblici */
+  --radijus-kartica: 20px;
+  --radijus-dugme: 999px;     /* dugmad su "pilule" */
+  --radijus-polje: 12px;
+  --senka: 0 6px 20px rgba(29, 53, 87, 0.08);
+
+  /* Razmaci */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: clamp(3.5rem, 8vw, 6rem);
+  --sirina: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+
+  /* Slojevi */
+  --z-sticky: 10;
+  --z-meni: 20;
+  --z-toast: 30;
+
+  /* Pokret */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --trajanje: 220ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --h1: 2.5rem;
+  }
+}

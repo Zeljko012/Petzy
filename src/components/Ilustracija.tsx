@@ -60,6 +60,55 @@ function Ime({ ime, x, y, sirina, maks, boja }: { ime: string; x: number; y: num
   );
 }
 
+/* Talasasta ivica između gornjeg i donjeg dela: naizmenični lukovi preko cele širine. */
+function talas(od: number, do_: number, y: number, amplituda: number, lukova: number): string {
+  const korak = (do_ - od) / lukova;
+  let d = `Q${od + korak / 2} ${y - amplituda * 2} ${od + korak} ${y}`;
+  for (let i = 2; i <= lukova; i++) d += ` T${od + korak * i} ${y}`;
+  return d;
+}
+
+/*
+  Podignuta činija iz dva dela (prema fotografiji uzorka): gornji deo sa reljefnim imenom,
+  donji deo sa talasastom ivicom. Slova su u boji donjeg dela, kao na pravom proizvodu.
+*/
+function Cinija({ gornji, donji, ime }: { gornji: string; donji: string; ime: string }) {
+  /* Ako su delovi skoro iste svetline, slova bi se izgubila; tada biramo kontrastnu boju. */
+  const [a, b] = [osvetljenost(gornji), osvetljenost(donji)];
+  const odnos = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  const slova = odnos >= 1.5 ? donji : bojaImena(gornji);
+  const prikaz = ime.toLocaleUpperCase("sr");
+  const znakova = Math.max(Array.from(prikaz).length, 3);
+  const velicina = Math.min(40, 210 / (znakova * 0.86));
+
+  return (
+    <g>
+      {/* donji deo: ceo trup, gornji deo se crta preko njega */}
+      <path d="M72 76 L42 246 Q200 284 358 246 L328 76 Z" fill={donji} />
+      <path d="M42 246 Q200 284 358 246 L356 236 Q200 272 44 236 Z" fill={senka(donji, 88)} />
+      {/* gornji deo sa talasastom donjom ivicom */}
+      <path d={`M72 76 L54 178 ${talas(54, 346, 178, 9, 8)} L328 76 Z`} fill={gornji} />
+      {/* otvori za hvat sa strane */}
+      <rect x="79" y="104" width="13" height="30" rx="6.5" fill={senka(gornji, 72)} transform="rotate(10 85 119)" />
+      <rect x="308" y="104" width="13" height="30" rx="6.5" fill={senka(gornji, 72)} transform="rotate(-10 314 119)" />
+      {/* obod i inox činija */}
+      <ellipse cx="200" cy="76" rx="128" ry="22" fill={senka(gornji, 90)} />
+      <ellipse cx="200" cy="74" rx="112" ry="17" fill={INOX_TAMNI} />
+      <ellipse cx="200" cy="77" rx="100" ry="12" fill={INOX} />
+      {prikaz && (
+        <g fontFamily="var(--font)" fontWeight={800} fontSize={velicina} letterSpacing="0.14em" textAnchor="middle">
+          <text x={202} y={140} dominantBaseline="central" fill={senka(gornji, 70)} opacity="0.55">
+            {prikaz}
+          </text>
+          <text x={200} y={138} dominantBaseline="central" fill={slova}>
+            {prikaz}
+          </text>
+        </g>
+      )}
+    </g>
+  );
+}
+
 export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
   const gornji = BOJE[boje.gornji ?? "koral"].hex;
   const donji = boje.donji ? BOJE[boje.donji].hex : gornji;
@@ -68,6 +117,7 @@ export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
   return (
     <svg viewBox="0 0 400 300" role="img" aria-label={opis} className={className}>
       <ellipse cx="200" cy="268" rx="150" ry="14" fill="var(--petzy-teget)" opacity="0.08" />
+      {vrsta === "cinija" && <Cinija gornji={gornji} donji={donji} ime={tekst} />}
       {vrsta === "drzac" && (
         <g>
           <path d="M70 160 H330 L352 256 Q352 262 346 262 H262 Q252 262 248 252 Q228 208 200 208 Q172 208 152 252 Q148 262 138 262 H54 Q48 262 48 256 Z" fill={donji} />

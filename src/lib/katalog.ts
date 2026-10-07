@@ -11,7 +11,8 @@ export type BojaId =
   | "krem"
   | "bela"
   | "grafit"
-  | "zalfija";
+  | "zalfija"
+  | "lavanda";
 
 export type BojaProizvoda = {
   id: BojaId;
@@ -29,6 +30,7 @@ export const BOJE: Record<BojaId, BojaProizvoda> = {
   bela: { id: "bela", naziv: "Bela", hex: "#FAFAF7" },
   grafit: { id: "grafit", naziv: "Grafit", hex: "#3A3F47" },
   zalfija: { id: "zalfija", naziv: "Žalfija", hex: "#9DB59A" },
+  lavanda: { id: "lavanda", naziv: "Lavanda", hex: "#B7A3DD" },
 };
 
 export type Deo = {
@@ -38,7 +40,7 @@ export type Deo = {
   podrazumevana: BojaId;
 };
 
-export type Ilustracija = "drzac" | "drzac-mini" | "kutijica" | "poklopac" | "privezak" | "podmetac";
+export type Ilustracija = "cinija" | "drzac" | "drzac-mini" | "kutijica" | "poklopac" | "privezak" | "podmetac";
 
 export type Ljubimac = "pas" | "macka";
 
@@ -59,9 +61,33 @@ export type Proizvod = {
   slike: string[];
 };
 
-const SVE_BOJE: BojaId[] = ["koral", "sunce", "tirkiz", "teget", "krem", "bela", "grafit", "zalfija"];
+const SVE_BOJE: BojaId[] = ["koral", "sunce", "tirkiz", "teget", "krem", "bela", "grafit", "zalfija", "lavanda"];
 
 export const PROIZVODI: Proizvod[] = [
+  {
+    slug: "cinija-sa-imenom",
+    naziv: "Činija sa imenom",
+    kratko: "Podignuta činija iz dva dela, ime utisnuto slovima.",
+    opis:
+      "{ime} ima svoju činiju, i to se vidi iz drugog kraja sobe. Gornji deo nosi ime ispisano reljefnim slovima, donji talasasti deo drži sve stabilno, a inox činija se vadi i pere za tren. Boje oba dela biraš sam.",
+    cena: 2900,
+    personalizovan: true,
+    delovi: [
+      { id: "gornji", naziv: "Gornji deo", boje: SVE_BOJE, podrazumevana: "lavanda" },
+      { id: "donji", naziv: "Donji deo i slova", boje: SVE_BOJE, podrazumevana: "krem" },
+    ],
+    ilustracija: "cinija",
+    za: ["pas", "macka"],
+    detalji: [
+      "Inox činija se vadi, pere se u mašini",
+      "Podignuta, da ljubimac jede bez saginjanja do poda",
+      "Ime reljefnim slovima, u boji donjeg dela",
+      "Ime do 12 slova, ispisujemo velikim slovima",
+    ],
+    izrada: "Izrada 3 do 5 radnih dana",
+    novo: true,
+    slike: [],
+  },
   {
     slug: "drzac-cinija-rucak",
     naziv: "Držač činija sa imenom",
@@ -106,7 +132,6 @@ export const PROIZVODI: Proizvod[] = [
       "Ime do 12 slova, utisnuto u gornji deo",
     ],
     izrada: "Izrada 3 do 5 radnih dana",
-    novo: true,
     slike: [],
   },
   {

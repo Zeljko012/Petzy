@@ -14,10 +14,9 @@ type Props = {
   className?: string;
 };
 
-/* Boje materijala koji nisu filament (inox, staklo). Podaci o proizvodu, ne UI boje. */
+/* Boje materijala koji nisu filament (inox, metal). Podaci o proizvodu, ne UI boje. */
 const INOX = "#C9D2DC";
 const INOX_TAMNI = "#8D99A8";
-const STAKLO = "#DCEFF2";
 
 function osvetljenost(hex: string): number {
   const n = parseInt(hex.slice(1), 16);
@@ -153,20 +152,6 @@ export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
           <Ime ime={tekst} x={200} y={158} sirina={140} maks={30} boja={bojaImena(gornji)} />
         </g>
       )}
-      {vrsta === "poklopac" && (
-        <g>
-          <path d="M122 120 H278 Q300 120 300 144 V236 Q300 262 274 262 H126 Q100 262 100 236 V144 Q100 120 122 120 Z" fill={STAKLO} stroke={INOX} strokeWidth="3" />
-          <circle cx="150" cy="232" r="14" fill="var(--petzy-sunce)" opacity="0.75" />
-          <circle cx="180" cy="238" r="12" fill="var(--petzy-koral)" opacity="0.55" />
-          <circle cx="212" cy="230" r="15" fill="var(--petzy-sunce)" opacity="0.75" />
-          <circle cx="246" cy="238" r="13" fill="var(--petzy-koral)" opacity="0.55" />
-          <circle cx="168" cy="212" r="12" fill="var(--petzy-koral)" opacity="0.5" />
-          <circle cx="230" cy="208" r="12" fill="var(--petzy-sunce)" opacity="0.7" />
-          <path d="M96 70 Q96 58 108 58 H292 Q304 58 304 70 V116 Q304 128 292 128 H108 Q96 128 96 116 Z" fill={gornji} />
-          <path d="M96 70 Q96 58 108 58 H292 Q304 58 304 70 V76 H96 Z" fill={senka(gornji, 88)} />
-          <Ime ime={tekst} x={200} y={102} sirina={180} maks={30} boja={bojaImena(gornji)} />
-        </g>
-      )}
       {vrsta === "privezak" && (
         <g>
           <circle cx="200" cy="58" r="20" fill="none" stroke={INOX_TAMNI} strokeWidth="6" />
@@ -174,6 +159,51 @@ export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
           <circle cx="200" cy="156" r="96" fill={gornji} />
           <circle cx="200" cy="82" r="9" fill="var(--petzy-krem)" />
           <Ime ime={tekst} x={200} y={164} sirina={150} maks={36} boja={bojaImena(gornji)} />
+        </g>
+      )}
+      {vrsta === "privezak-kost" && (
+        <g>
+          <circle cx="98" cy="96" r="16" fill="none" stroke={INOX_TAMNI} strokeWidth="6" />
+          {[
+            { fill: senka(gornji, 86), dy: 6 },
+            { fill: gornji, dy: 0 },
+          ].map(({ fill, dy }) => (
+            <g key={dy} fill={fill} transform={`translate(0 ${dy})`}>
+              <rect x="114" y="124" width="172" height="64" rx="12" />
+              <circle cx="116" cy="126" r="32" />
+              <circle cx="116" cy="186" r="32" />
+              <circle cx="284" cy="126" r="32" />
+              <circle cx="284" cy="186" r="32" />
+            </g>
+          ))}
+          <circle cx="110" cy="114" r="7" fill="var(--petzy-krem)" />
+          <Ime ime={tekst} x={200} y={156} sirina={150} maks={34} boja={bojaImena(gornji)} />
+        </g>
+      )}
+      {vrsta === "nfc" && (
+        <g>
+          <circle cx="200" cy="44" r="18" fill="none" stroke={INOX_TAMNI} strokeWidth="6" />
+          <rect x="104" y="64" width="192" height="192" rx="44" fill={senka(gornji, 86)} transform="translate(0 5)" />
+          <rect x="104" y="64" width="192" height="192" rx="44" fill={gornji} />
+          <circle cx="200" cy="86" r="8" fill="var(--petzy-krem)" />
+          <Ime ime={tekst} x={200} y={156} sirina={150} maks={34} boja={bojaImena(gornji)} />
+          <g fill="none" stroke={bojaImena(gornji)} strokeWidth="4" strokeLinecap="round" opacity="0.8">
+            <path d="M188 204 Q194 212 188 220" />
+            <path d="M198 198 Q208 212 198 226" />
+            <path d="M208 192 Q222 212 208 232" />
+          </g>
+        </g>
+      )}
+      {vrsta === "kasika" && (
+        <g>
+          <rect x="176" y="134" width="196" height="40" rx="20" fill={senka(donji, 86)} transform="translate(0 4)" />
+          <rect x="176" y="134" width="196" height="40" rx="20" fill={donji} />
+          <circle cx="350" cy="154" r="8" fill="var(--petzy-krem)" />
+          <path d="M34 112 H196 V168 Q196 232 115 232 Q34 232 34 168 Z" fill={gornji} />
+          <path d="M34 168 Q34 232 115 232 Q196 232 196 168 V184 Q190 238 115 238 Q40 238 34 184 Z" fill={senka(gornji, 80)} />
+          <ellipse cx="115" cy="112" rx="81" ry="18" fill={senka(gornji, 74)} />
+          <ellipse cx="115" cy="114" rx="70" ry="13" fill={senka(gornji, 62)} />
+          <Ime ime={tekst} x={266} y={154} sirina={150} maks={24} boja={bojaImena(donji)} />
         </g>
       )}
       {vrsta === "podmetac" && (

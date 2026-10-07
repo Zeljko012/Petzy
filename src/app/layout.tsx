@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | Petzy",
   },
   description:
-    "Držači činija, kutijice za kesice, poklopci i privesci sa imenom tvog psa ili mačke. Biraš boje, vidiš izgled odmah, plaćaš pouzećem.",
+    "Nosači za činije, kašičice za hranu, privesci, NFC privesci i držači kesica sa imenom tvog psa ili mačke. Biraš boje, vidiš izgled odmah, plaćaš pouzećem.",
   openGraph: {
     siteName: "Petzy",
     locale: "sr_RS",

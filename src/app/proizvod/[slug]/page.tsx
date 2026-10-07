@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Konfigurator } from "@/components/Konfigurator";
 import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaNovac } from "@/components/Ikonice";
-import { BESPLATNA_DOSTAVA_OD, DOSTAVA_CENA, PROIZVODI, nadjiProizvod } from "@/lib/katalog";
+import { BESPLATNA_DOSTAVA_OD, DOSTAVA_CENA, PROIZVODI, nadjiKategoriju, nadjiProizvod } from "@/lib/katalog";
 import { formatRSD } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -46,6 +46,7 @@ async function Sadrzaj({ params }: Pick<PageProps<"/proizvod/[slug]">, "params">
   const { slug } = await params;
   const p = nadjiProizvod(slug);
   if (!p) notFound();
+  const kategorija = nadjiKategoriju(p.kategorija);
 
   return (
     <div className="omotac">
@@ -57,6 +58,11 @@ async function Sadrzaj({ params }: Pick<PageProps<"/proizvod/[slug]">, "params">
           <li>
             <Link href="/prodavnica">Prodavnica</Link>
           </li>
+          {kategorija && (
+            <li>
+              <Link href={`/prodavnica/${kategorija.id}`}>{kategorija.naziv}</Link>
+            </li>
+          )}
           <li aria-current="page">{p.naziv}</li>
         </ol>
       </nav>

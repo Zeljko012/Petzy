@@ -40,7 +40,57 @@ export type Deo = {
   podrazumevana: BojaId;
 };
 
-export type Ilustracija = "cinija" | "drzac" | "drzac-mini" | "kutijica" | "poklopac" | "privezak" | "podmetac";
+export type Ilustracija =
+  | "cinija"
+  | "drzac"
+  | "drzac-mini"
+  | "kutijica"
+  | "privezak"
+  | "privezak-kost"
+  | "nfc"
+  | "kasika"
+  | "podmetac";
+
+export type KategorijaId = "nosaci-za-cinije" | "kasicice-za-hranu" | "privesci" | "nfc-privesci" | "drzaci-kesica";
+
+export type Kategorija = {
+  id: KategorijaId;
+  naziv: string;
+  /* Kratak opis za stranicu kategorije, u tonu iz BRAND.md. */
+  opis: string;
+};
+
+export const KATEGORIJE: Kategorija[] = [
+  {
+    id: "nosaci-za-cinije",
+    naziv: "Nosači za činije",
+    opis: "Mesto za ručak sa imenom tvog ljubimca, u bojama koje se uklapaju u tvoj dom.",
+  },
+  {
+    id: "kasicice-za-hranu",
+    naziv: "Kašičice za hranu",
+    opis: "Tačna mera hrane svaki put, i kašičica koja se ne meša sa ostalim priborom.",
+  },
+  {
+    id: "privesci",
+    naziv: "Privesci sa imenom",
+    opis: "Lagani privesci za ogrlicu, sa imenom tvog drugara.",
+  },
+  {
+    id: "nfc-privesci",
+    naziv: "NFC privesci",
+    opis: "Privezak sa imenom i NFC čipom: ko nađe tvog ljubimca, prisloni telefon i vidi kako da te pozove.",
+  },
+  {
+    id: "drzaci-kesica",
+    naziv: "Držači kesica",
+    opis: "Kesice za izmet uvek pri ruci, u kutijici sa imenom koja se kači na povodac.",
+  },
+];
+
+export function nadjiKategoriju(id: string): Kategorija | undefined {
+  return KATEGORIJE.find((k) => k.id === id);
+}
 
 export type Ljubimac = "pas" | "macka";
 
@@ -54,6 +104,7 @@ export type Proizvod = {
   personalizovan: boolean;
   delovi: Deo[];
   ilustracija: Ilustracija;
+  kategorija: KategorijaId;
   za: Ljubimac[];
   detalji: string[];
   izrada: string;
@@ -77,6 +128,7 @@ export const PROIZVODI: Proizvod[] = [
       { id: "donji", naziv: "Donji deo i slova", boje: SVE_BOJE, podrazumevana: "krem" },
     ],
     ilustracija: "cinija",
+    kategorija: "nosaci-za-cinije",
     za: ["pas", "macka"],
     detalji: [
       "Inox činija se vadi, pere se u mašini",
@@ -101,6 +153,7 @@ export const PROIZVODI: Proizvod[] = [
       { id: "donji", naziv: "Donji deo", boje: SVE_BOJE, podrazumevana: "teget" },
     ],
     ilustracija: "drzac",
+    kategorija: "nosaci-za-cinije",
     za: ["pas", "macka"],
     detalji: [
       "Dve inox činije od 750 ml, peru se u mašini",
@@ -124,6 +177,7 @@ export const PROIZVODI: Proizvod[] = [
       { id: "donji", naziv: "Donji deo", boje: SVE_BOJE, podrazumevana: "krem" },
     ],
     ilustracija: "drzac-mini",
+    kategorija: "nosaci-za-cinije",
     za: ["macka", "pas"],
     detalji: [
       "Dve inox činije od 400 ml",
@@ -136,8 +190,8 @@ export const PROIZVODI: Proizvod[] = [
   },
   {
     slug: "kutijica-za-kesice",
-    naziv: "Kutijica za kesice sa imenom",
-    kratko: "Kači se na povodac, rolna kesica uvek pri ruci.",
+    naziv: "Držač kesica sa imenom",
+    kratko: "Kutijica za kesice za izmet, kači se na povodac.",
     opis:
       "{ime} je spreman za šetnju, a kesice su uvek tu. Kutijica se kači na povodac, rolna se menja za par sekundi, a ime je na poklopcu.",
     cena: 1200,
@@ -147,31 +201,12 @@ export const PROIZVODI: Proizvod[] = [
       { id: "donji", naziv: "Telo", boje: SVE_BOJE, podrazumevana: "teget" },
     ],
     ilustracija: "kutijica",
+    kategorija: "drzaci-kesica",
     za: ["pas"],
     detalji: [
       "Odgovara standardnim rolnama kesica",
       "Karabiner za povodac uključen",
       "Ime do 12 slova na poklopcu",
-    ],
-    izrada: "Izrada 2 do 4 radna dana",
-    slike: [],
-  },
-  {
-    slug: "poklopac-za-teglu",
-    naziv: "Poklopac za teglu sa imenom",
-    kratko: "Za teglu sa poslasticama, staje na standardne tegle.",
-    opis:
-      "{ime} tačno zna gde stoje poslastice. Poklopac sa imenom staje na standardnu teglu od 1 litra, a tegla ostaje zatvorena i kad neko radoznao pokuša da je otvori šapom.",
-    cena: 1500,
-    personalizovan: true,
-    delovi: [{ id: "gornji", naziv: "Boja poklopca", boje: SVE_BOJE, podrazumevana: "koral" }],
-    ilustracija: "poklopac",
-    za: ["pas", "macka"],
-    detalji: [
-      "Za tegle prečnika otvora 82 mm",
-      "Silikonski zaptivač uključen",
-      "Tegla nije u kompletu",
-      "Ime do 12 slova na vrhu poklopca",
     ],
     izrada: "Izrada 2 do 4 radna dana",
     slike: [],
@@ -186,9 +221,66 @@ export const PROIZVODI: Proizvod[] = [
     personalizovan: true,
     delovi: [{ id: "gornji", naziv: "Boja priveska", boje: SVE_BOJE, podrazumevana: "tirkiz" }],
     ilustracija: "privezak",
+    kategorija: "privesci",
     za: ["pas", "macka"],
     detalji: ["Prečnik 3 cm, težina 4 g", "Metalna karika uključena", "Ime do 12 slova"],
     izrada: "Izrada 2 do 3 radna dana",
+    slike: [],
+  },
+  {
+    slug: "privezak-kost",
+    naziv: "Privezak kost sa imenom",
+    kratko: "Privezak u obliku koske, ime sa prednje strane.",
+    opis:
+      "{ime} nosi svoju kost, ali ovu ne zakopava. Lagan privezak za ogrlicu u obliku koske, sa imenom spreda i brojem telefona po želji pozadi.",
+    cena: 790,
+    personalizovan: true,
+    delovi: [{ id: "gornji", naziv: "Boja priveska", boje: SVE_BOJE, podrazumevana: "sunce" }],
+    ilustracija: "privezak-kost",
+    kategorija: "privesci",
+    za: ["pas"],
+    detalji: ["Dužina 4,5 cm, težina 5 g", "Metalna karika uključena", "Ime do 12 slova"],
+    izrada: "Izrada 2 do 3 radna dana",
+    slike: [],
+  },
+  {
+    slug: "nfc-privezak",
+    naziv: "NFC privezak sa imenom",
+    kratko: "Ime spreda, NFC čip unutra: prisloni telefon i vidi kontakt.",
+    opis:
+      "Ako {ime} ikad odluta, ko god ga nađe može da prisloni telefon uz privezak i odmah vidi kako da te pozove. Bez aplikacije, bez baterije, radi sa skoro svakim novijim telefonom.",
+    cena: 1490,
+    personalizovan: true,
+    delovi: [{ id: "gornji", naziv: "Boja priveska", boje: SVE_BOJE, podrazumevana: "teget" }],
+    ilustracija: "nfc",
+    kategorija: "nfc-privesci",
+    za: ["pas", "macka"],
+    detalji: [
+      "NFC čip ugrađen u privezak, bez baterije",
+      "Podatke za kontakt menjaš kad god poželiš",
+      "Radi sa većinom novijih Android i iPhone telefona",
+      "Ime do 12 slova",
+    ],
+    izrada: "Izrada 3 do 5 radnih dana",
+    slike: [],
+  },
+  {
+    slug: "kasicica-za-hranu",
+    naziv: "Kašičica za hranu sa imenom",
+    kratko: "Merica za suvu hranu iz dva dela, ime na dršci.",
+    opis:
+      "{ime} zna zvuk ove kašičice iz druge sobe. Merica za suvu hranu sa imenom na dršci, da svaki obrok bude iste veličine, a kašičica uvek na svom mestu.",
+    cena: 890,
+    personalizovan: true,
+    delovi: [
+      { id: "gornji", naziv: "Kašika", boje: SVE_BOJE, podrazumevana: "tirkiz" },
+      { id: "donji", naziv: "Drška", boje: SVE_BOJE, podrazumevana: "krem" },
+    ],
+    ilustracija: "kasika",
+    kategorija: "kasicice-za-hranu",
+    za: ["pas", "macka"],
+    detalji: ["Zapremina oko 250 ml", "Rupica na dršci za kačenje", "Ime do 12 slova na dršci"],
+    izrada: "Izrada 2 do 4 radna dana",
     slike: [],
   },
   {
@@ -203,6 +295,7 @@ export const PROIZVODI: Proizvod[] = [
       { id: "gornji", naziv: "Boja", boje: ["koral", "tirkiz", "teget", "grafit", "zalfija"], podrazumevana: "zalfija" },
     ],
     ilustracija: "podmetac",
+    kategorija: "nosaci-za-cinije",
     za: ["pas", "macka"],
     detalji: ["Dimenzije 48 × 30 cm", "Prehrambeni silikon", "Odgovara uz oba držača"],
     izrada: "Šaljemo u roku od 1 do 2 radna dana",

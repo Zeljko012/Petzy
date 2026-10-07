@@ -14,7 +14,7 @@ Vlasnici pasa i mačaka u Srbiji i regionu (Hrvatska, BiH, Crna Gora), i ljudi k
 
 ## Product Purpose
 
-Petzy je online prodavnica personalizovane opreme za ljubimce (držači činija iz dva dela, kutijice za kesice, poklopci za tegle, privesci) sa imenom ljubimca, uz blog sa proverenim savetima o nezi i dresuri. Kupac upisuje ime ljubimca, bira boju gornjeg i donjeg dela i odmah vidi kako će proizvod izgledati. Uspeh: kupac sa telefona, za par minuta, od Instagram objave stigne do poslate porudžbine i oseti da je napravio nešto samo za svog drugara.
+Petzy je online prodavnica personalizovane opreme za ljubimce (nosači za činije iz dva dela, kašičice za hranu, privesci, NFC privesci i držači kesica za izmet) sa imenom ljubimca, uz blog sa proverenim savetima o nezi i dresuri. Kupac upisuje ime ljubimca, bira boju gornjeg i donjeg dela i odmah vidi kako će proizvod izgledati. Uspeh: kupac sa telefona, za par minuta, od Instagram objave stigne do poslate porudžbine i oseti da je napravio nešto samo za svog drugara.
 
 ## Positioning
 

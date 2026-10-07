@@ -1580,3 +1580,97 @@ textarea.polje-unos {
     margin-inline: auto;
   }
 }
+
+/* ---------- Kategorije ---------- */
+
+.filteri {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--s-1) var(--gutter);
+  scrollbar-width: none;
+}
+
+.filteri::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .filteri {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+a.filter {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  color: var(--tekst);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.filter[aria-current="page"] {
+  background: var(--petzy-teget);
+  border-color: var(--petzy-teget);
+  color: var(--petzy-krem);
+}
+
+.kategorija-sekcija {
+  padding-top: var(--s-7);
+}
+
+.kategorija-sekcija .sekcija-glava {
+  margin-bottom: var(--s-5);
+}
+
+.kategorija-sekcija .sekcija-glava p {
+  margin-top: var(--s-1);
+}
+
+.mreza-kategorija {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+}
+
+.kategorija-plocica {
+  position: relative;
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-3) var(--s-4);
+  border-radius: var(--radijus-kartica);
+  background: var(--bg-kartica);
+  box-shadow: var(--senka);
+  color: var(--tekst);
+  text-decoration: none;
+  transition: transform 320ms var(--ease-out);
+}
+
+.kategorija-plocica:hover {
+  transform: translateY(-3px);
+}
+
+.kategorija-plocica .kartica-slika {
+  border-radius: calc(var(--radijus-kartica) - 6px);
+}
+
+.kategorija-plocica:nth-child(3n + 2) .kartica-slika {
+  background: var(--sunce-svetlo);
+}
+
+.kategorija-plocica:nth-child(3n + 3) .kartica-slika {
+  background: var(--krem-tamniji);
+}
+
+.kategorija-plocica strong {
+  font-size: var(--tekst-veliki);
+  padding-inline: var(--s-2);
+}
+
+.kategorija-plocica span {
+  padding-inline: var(--s-2);
+}

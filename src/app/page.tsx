@@ -2,7 +2,8 @@ import Link from "next/link";
 import { KarticaProizvoda } from "@/components/KarticaProizvoda";
 import { ProbniSto } from "@/components/ProbniSto";
 import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaNovac, IkonaSrce, IkonaStrelica } from "@/components/Ikonice";
-import { BESPLATNA_DOSTAVA_OD, PROIZVODI, nadjiProizvod } from "@/lib/katalog";
+import { BESPLATNA_DOSTAVA_OD, KATEGORIJE, PROIZVODI, altTekst, nadjiProizvod, podrazumevaneBoje } from "@/lib/katalog";
+import { Ilustracija } from "@/components/Ilustracija";
 import { SAVETI } from "@/lib/saveti";
 import { formatDatum, formatRSD } from "@/lib/format";
 
@@ -18,7 +19,7 @@ export default function Pocetna() {
               Oprema koja nosi <em>ime</em> tvog najboljeg drugara
             </h1>
             <p className="hero-uvod">
-              Držači činija, kutijice i privesci sa imenom tvog psa ili mačke. Biraš boje, vidiš izgled odmah, a
+              Nosači za činije, kašičice, privesci i držači kesica sa imenom tvog psa ili mačke. Biraš boje, vidiš izgled odmah, a
               mi ga pravimo baš za vas.
             </p>
             <div className="hero-akcije">
@@ -54,7 +55,7 @@ export default function Pocetna() {
             </li>
             <li className="korak">
               <h3>Izaberi boje</h3>
-              <p>Držači su iz dva dela: biraš boju gornjeg i donjeg dela, da se uklopi u tvoj dom.</p>
+              <p>Nosači i kašičice su iz dva dela: biraš boju svakog dela, da se uklopi u tvoj dom.</p>
             </li>
             <li className="korak">
               <h3>Mi pravimo, ti plaćaš kad stigne</h3>
@@ -64,13 +65,41 @@ export default function Pocetna() {
         </div>
       </section>
 
+      <section className="sekcija" aria-labelledby="kategorije">
+        <div className="omotac">
+          <div className="sekcija-glava">
+            <h2 id="kategorije">Šta pravimo</h2>
+            <Link href="/prodavnica" className="link-strelica">
+              Svi proizvodi <IkonaStrelica />
+            </Link>
+          </div>
+          <div className="mreza-kategorija">
+            {KATEGORIJE.map((k, i) => {
+              const proizvodi = PROIZVODI.filter((p) => p.kategorija === k.id);
+              const prvi = proizvodi[0];
+              if (!prvi) return null;
+              const boje = podrazumevaneBoje(prvi);
+              const ime = ["Maks", "Luna", "Bobi", "Mila", "Leo"][i % 5];
+              return (
+                <Link key={k.id} href={`/prodavnica/${k.id}`} className="kategorija-plocica">
+                  <div className="kartica-slika">
+                    <Ilustracija vrsta={prvi.ilustracija} boje={boje} ime={ime} opis={altTekst(prvi, ime, boje)} />
+                  </div>
+                  <strong>{k.naziv}</strong>
+                  <span className="mali sporedno">
+                    {proizvodi.length === 1 ? "1 proizvod" : `${proizvodi.length} proizvoda`}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       <section className="sekcija" aria-labelledby="proizvodi">
         <div className="omotac">
           <div className="sekcija-glava">
             <h2 id="proizvodi">Napravljeno za tvog ljubimca</h2>
-            <Link href="/prodavnica" className="link-strelica">
-              Svi proizvodi <IkonaStrelica />
-            </Link>
           </div>
           <div className="mreza-proizvoda">
             {PROIZVODI.slice(0, 4).map((p, i) => (

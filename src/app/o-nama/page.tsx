@@ -17,7 +17,7 @@ export default function ONama() {
           tvoj ljubimac nije kao svaki drugi.
         </p>
         <p>
-          Zato pravimo stvari sa imenom: držače činija, kutijice za kesice, poklopce i priveske, u bojama koje se
+          Zato pravimo stvari sa imenom: nosače za činije, kašičice za hranu, priveske i držače kesica, u bojama koje se
           uklapaju u tvoj dom, a ne kriju u ćošku. Svaki komad nastaje tek kad ga poručiš, i pre slanja ga
           proveravamo. Ako nije savršen, pravimo novi.
         </p>

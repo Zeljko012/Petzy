@@ -267,19 +267,23 @@ export const PROIZVODI: Proizvod[] = [
   {
     slug: "kasicica-za-hranu",
     naziv: "Kašičica za hranu sa imenom",
-    kratko: "Merica za suvu hranu iz dva dela, ime na dršci.",
+    kratko: "Kašika u obliku šape, drška u obliku koske sa imenom.",
     opis:
-      "{ime} zna zvuk ove kašičice iz druge sobe. Merica za suvu hranu sa imenom na dršci, da svaki obrok bude iste veličine, a kašičica uvek na svom mestu.",
+      "{ime} zna zvuk ove kašičice iz druge sobe. Kašika je u obliku šape, a na dršci u obliku koske stoji ime, da svaki obrok bude iste veličine i da kašičica uvek ima svoje mesto.",
     cena: 890,
     personalizovan: true,
     delovi: [
-      { id: "gornji", naziv: "Kašika", boje: SVE_BOJE, podrazumevana: "tirkiz" },
-      { id: "donji", naziv: "Drška", boje: SVE_BOJE, podrazumevana: "krem" },
+      { id: "gornji", naziv: "Osnova i slova", boje: SVE_BOJE, podrazumevana: "koral" },
+      { id: "donji", naziv: "Umetak", boje: SVE_BOJE, podrazumevana: "krem" },
     ],
     ilustracija: "kasika",
     kategorija: "kasicice-za-hranu",
     za: ["pas", "macka"],
-    detalji: ["Zapremina oko 250 ml", "Rupica na dršci za kačenje", "Ime do 12 slova na dršci"],
+    detalji: [
+      "Kašika u obliku šape, jastučići u boji umetka",
+      "Drška u obliku koske, ime u boji osnove",
+      "Ime do 12 slova",
+    ],
     izrada: "Izrada 2 do 4 radna dana",
     slike: [],
   },

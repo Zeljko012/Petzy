@@ -108,6 +108,79 @@ function Cinija({ gornji, donji, ime }: { gornji: string; donji: string; ime: st
   );
 }
 
+/*
+  Kašičica za hranu (prema 3D modelu): kašika u obliku šape, drška u obliku koske.
+  "osnova" su zidovi, dno i slova imena; "umetak" su jastučići šape i unutrašnjost koske.
+*/
+const DLAN = { x: 170, y: 150, r: 64 };
+const PRSTI = [128, 162, 198, 232].map((ugao) => {
+  const rad = (ugao * Math.PI) / 180;
+  return { x: DLAN.x + 80 * Math.cos(rad), y: DLAN.y - 80 * Math.sin(rad), r: 35 };
+});
+
+function Sapa({ dodatak, fill }: { dodatak: number; fill: string }) {
+  return (
+    <g fill={fill}>
+      <circle cx={DLAN.x} cy={DLAN.y} r={DLAN.r + dodatak} />
+      {PRSTI.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={p.r + dodatak} />
+      ))}
+    </g>
+  );
+}
+
+function Koska({ uvuceno, fill }: { uvuceno: number; fill: string }) {
+  const r = 25 - uvuceno;
+  return (
+    <g fill={fill}>
+      <rect x={214 + uvuceno} y={124 + uvuceno} width={148 - uvuceno * 2} height={52 - uvuceno * 2} rx={6} />
+      <circle cx={362 - uvuceno * 0.4} cy={126} r={r} />
+      <circle cx={362 - uvuceno * 0.4} cy={174} r={r} />
+    </g>
+  );
+}
+
+function Kasicica({ osnova, umetak, ime }: { osnova: string; umetak: string; ime: string }) {
+  /* Ako su obe boje skoro iste svetline, ime ne bi moglo da se pročita; tada uzimamo kontrastnu. */
+  const [a, b] = [osvetljenost(osnova), osvetljenost(umetak)];
+  const odnos = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  const slova = odnos >= 1.5 ? osnova : bojaImena(umetak);
+
+  return (
+    <g>
+      <g transform="translate(3 7)">
+        <Sapa dodatak={10} fill={senka(osnova, 70)} />
+        <Koska uvuceno={0} fill={senka(osnova, 70)} />
+      </g>
+      <Koska uvuceno={0} fill={osnova} />
+      <Sapa dodatak={10} fill={osnova} />
+      <Sapa dodatak={0} fill={senka(osnova, 84)} />
+      <Koska uvuceno={6} fill={umetak} />
+      <g fill={umetak}>
+        <ellipse cx={DLAN.x + 6} cy={DLAN.y + 2} rx={47} ry={50} />
+        {PRSTI.map((p, i) => (
+          <ellipse key={i} cx={p.x - 3} cy={p.y} rx={23} ry={26} transform={`rotate(${[-40, -12, 12, 40][i]} ${p.x - 2} ${p.y})`} />
+        ))}
+      </g>
+      {ime && (
+        <text
+          x={292}
+          y={151}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily="var(--font)"
+          fontWeight={800}
+          fontStyle="italic"
+          fontSize={Math.min(26, 120 / (Math.max(Array.from(ime).length, 3) * 0.58))}
+          fill={slova}
+        >
+          {ime}
+        </text>
+      )}
+    </g>
+  );
+}
+
 export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
   const gornji = BOJE[boje.gornji ?? "koral"].hex;
   const donji = boje.donji ? BOJE[boje.donji].hex : gornji;
@@ -194,18 +267,7 @@ export function Ilustracija({ vrsta, boje, ime = "", opis, className }: Props) {
           </g>
         </g>
       )}
-      {vrsta === "kasika" && (
-        <g>
-          <rect x="176" y="134" width="196" height="40" rx="20" fill={senka(donji, 86)} transform="translate(0 4)" />
-          <rect x="176" y="134" width="196" height="40" rx="20" fill={donji} />
-          <circle cx="350" cy="154" r="8" fill="var(--petzy-krem)" />
-          <path d="M34 112 H196 V168 Q196 232 115 232 Q34 232 34 168 Z" fill={gornji} />
-          <path d="M34 168 Q34 232 115 232 Q196 232 196 168 V184 Q190 238 115 238 Q40 238 34 184 Z" fill={senka(gornji, 80)} />
-          <ellipse cx="115" cy="112" rx="81" ry="18" fill={senka(gornji, 74)} />
-          <ellipse cx="115" cy="114" rx="70" ry="13" fill={senka(gornji, 62)} />
-          <Ime ime={tekst} x={266} y={154} sirina={150} maks={24} boja={bojaImena(donji)} />
-        </g>
-      )}
+      {vrsta === "kasika" && <Kasicica osnova={gornji} umetak={donji} ime={tekst} />}
       {vrsta === "podmetac" && (
         <g>
           <path d="M86 150 Q90 136 106 136 H294 Q310 136 314 150 L352 236 Q356 252 338 252 H62 Q44 252 48 236 Z" fill={senka(gornji, 84)} />

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { KarticaProizvoda } from "@/components/KarticaProizvoda";
 import { ProbniSto } from "@/components/ProbniSto";
-import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaNovac, IkonaSrce, IkonaStrelica } from "@/components/Ikonice";
+import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaList, IkonaNovac, IkonaSrce, IkonaStrelica } from "@/components/Ikonice";
 import { BESPLATNA_DOSTAVA_OD, KATEGORIJE, PROIZVODI, altTekst, nadjiProizvod, podrazumevaneBoje } from "@/lib/katalog";
 import { Ilustracija } from "@/components/Ilustracija";
 import { SAVETI } from "@/lib/saveti";
@@ -36,6 +36,9 @@ export default function Pocetna() {
               </li>
               <li>
                 <IkonaKvacica /> Ime i ćirilicom
+              </li>
+              <li>
+                <IkonaKvacica /> Od biljne PLA plastike
               </li>
             </ul>
           </div>
@@ -116,11 +119,19 @@ export default function Pocetna() {
               Zašto Petzy
             </h2>
             <p className="citat">
-              Oprema za ljubimce je uglavnom bezlična plastika. <span>Mi pravimo stvari sa imenom,</span> koje
-              izgledaju lepo u tvom domu.
+              Oprema za ljubimce je uglavnom bezlična plastika iz nafte. <span>Mi pravimo stvari sa imenom,</span>{" "}
+              od plastike biljnog porekla.
             </p>
           </div>
           <ul className="traka-lista">
+            <li>
+              <IkonaList />
+              <h3>Od plastike biljnog porekla, ne iz nafte</h3>
+              <p>
+                Sve pravimo od PLA plastike, koja se dobija iz obnovljivih izvora kao što su kukuruzni skrob i
+                šećerna trska.
+              </p>
+            </li>
             <li>
               <IkonaKist />
               <h3>Svaki komad se pravi po porudžbini</h3>

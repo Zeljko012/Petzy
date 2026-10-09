@@ -17,6 +17,8 @@
 
 **Po čemu se razlikujemo:** oprema za ljubimce je uglavnom bezlična plastika. Petzy pravi stvari sa imenom ljubimca, koje izgledaju lepo u domu, uz savete kojima se može verovati.
 
+**Materijal:** sve što 3D štampamo je od PLA plastike biljnog porekla, koja se dobija iz obnovljivih izvora (kukuruzni skrob, šećerna trska), a ne iz nafte. Ovo ističemo na početnoj i na svakom proizvodu. Bez tvrdnji koje ne možemo da dokažemo: ne „biorazgradivo” (PLA se razgrađuje samo u industrijskom kompostiranju) i ne „bezbedno za hranu” bez sertifikata filamenta.
+
 **Osećaj brenda:** toplo i porodično, jarko i veselo.
 
 ## 2. Boje

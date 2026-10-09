@@ -94,6 +94,23 @@ export function nadjiKategoriju(id: string): Kategorija | undefined {
 
 export type Ljubimac = "pas" | "macka";
 
+/*
+  Materijal se prikazuje na svakom proizvodu. Podrazumevano je PLA (svi 3D štampani delovi).
+  Pazi na tvrdnje (BRAND.md): ne pišemo "biorazgradivo" ni "bezbedno za hranu" bez sertifikata filamenta.
+*/
+export type Materijal = "pla" | "silikon";
+
+export const MATERIJALI: Record<Materijal, { naziv: string; opis: string }> = {
+  pla: {
+    naziv: "Od PLA plastike biljnog porekla",
+    opis: "PLA se dobija iz obnovljivih izvora, kao što su kukuruzni skrob i šećerna trska, a ne iz nafte.",
+  },
+  silikon: {
+    naziv: "Od silikona",
+    opis: "Mekan i savitljiv, pere se pod mlazom vode.",
+  },
+};
+
 export type Proizvod = {
   slug: string;
   naziv: string;
@@ -108,6 +125,10 @@ export type Proizvod = {
   za: Ljubimac[];
   detalji: string[];
   izrada: string;
+  /* Ako se izostavi, proizvod je od PLA. */
+  materijal?: Materijal;
+  /* Delovi od drugog materijala, npr. inox činija. */
+  materijalNapomena?: string;
   novo?: boolean;
   slike: string[];
 };
@@ -137,6 +158,7 @@ export const PROIZVODI: Proizvod[] = [
       "Ime do 12 slova, ispisujemo velikim slovima",
     ],
     izrada: "Izrada 3 do 5 radnih dana",
+    materijalNapomena: "Činija je od inoksa.",
     novo: true,
     slike: [],
   },
@@ -162,6 +184,7 @@ export const PROIZVODI: Proizvod[] = [
       "Ime do 12 slova, utisnuto u gornji deo",
     ],
     izrada: "Izrada 3 do 5 radnih dana",
+    materijalNapomena: "Činije su od inoksa.",
     slike: [],
   },
   {
@@ -186,6 +209,7 @@ export const PROIZVODI: Proizvod[] = [
       "Ime do 12 slova, utisnuto u gornji deo",
     ],
     izrada: "Izrada 3 do 5 radnih dana",
+    materijalNapomena: "Činije su od inoksa.",
     slike: [],
   },
   {
@@ -303,9 +327,14 @@ export const PROIZVODI: Proizvod[] = [
     za: ["pas", "macka"],
     detalji: ["Dimenzije 48 × 30 cm", "Prehrambeni silikon", "Odgovara uz oba držača"],
     izrada: "Šaljemo u roku od 1 do 2 radna dana",
+    materijal: "silikon",
     slike: [],
   },
 ];
+
+export function materijalProizvoda(p: Proizvod) {
+  return MATERIJALI[p.materijal ?? "pla"];
+}
 
 export function nadjiProizvod(slug: string): Proizvod | undefined {
   return PROIZVODI.find((p) => p.slug === slug);

@@ -8,7 +8,7 @@ import { formatRSD } from "@/lib/format";
 import { proveriIme } from "@/lib/validacija";
 import { Ilustracija } from "./Ilustracija";
 import { IzborBoje, PoljeIme } from "./PoljaKonfiguratora";
-import { IkonaInfo, IkonaKvacica, IkonaStrelica } from "./Ikonice";
+import { IkonaInfo, IkonaKvacica, IkonaList, IkonaStrelica } from "./Ikonice";
 
 type Props = {
   proizvod: Proizvod;
@@ -75,6 +75,12 @@ export function Konfigurator({ proizvod: p, children }: Props) {
         <div>
           <h1>{p.naziv}</h1>
           <p className="proizvod-cena">{formatRSD(p.cena)}</p>
+          {(p.materijal ?? "pla") === "pla" && (
+            <p className="oznaka-materijala">
+              <IkonaList />
+              PLA plastika biljnog porekla
+            </p>
+          )}
         </div>
         <p>{opisSaImenom(p, ime)}</p>
 

@@ -1674,3 +1674,27 @@ a.filter {
 .kategorija-plocica span {
   padding-inline: var(--s-2);
 }
+
+.oznaka-materijala {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--radijus-dugme);
+  background: var(--tirkiz-svetli);
+  color: var(--tekst);
+  font-size: var(--tekst-mali);
+  font-weight: 700;
+}
+
+.oznaka-materijala svg {
+  width: 16px;
+  height: 16px;
+  color: var(--petzy-teget);
+}
+
+.hero-cinjenice li:last-child svg,
+.traka-lista li:first-child svg {
+  color: var(--petzy-tirkiz);
+}

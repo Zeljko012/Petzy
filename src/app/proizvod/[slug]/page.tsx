@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { Konfigurator } from "@/components/Konfigurator";
-import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaNovac } from "@/components/Ikonice";
-import { BESPLATNA_DOSTAVA_OD, DOSTAVA_CENA, PROIZVODI, nadjiKategoriju, nadjiProizvod } from "@/lib/katalog";
+import { IkonaKamion, IkonaKist, IkonaKvacica, IkonaList, IkonaNovac } from "@/components/Ikonice";
+import { BESPLATNA_DOSTAVA_OD, DOSTAVA_CENA, PROIZVODI, materijalProizvoda, nadjiKategoriju, nadjiProizvod } from "@/lib/katalog";
 import { formatRSD } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -47,6 +47,7 @@ async function Sadrzaj({ params }: Pick<PageProps<"/proizvod/[slug]">, "params">
   const p = nadjiProizvod(slug);
   if (!p) notFound();
   const kategorija = nadjiKategoriju(p.kategorija);
+  const materijal = materijalProizvoda(p);
 
   return (
     <div className="omotac">
@@ -82,6 +83,16 @@ async function Sadrzaj({ params }: Pick<PageProps<"/proizvod/[slug]">, "params">
           </ul>
         </section>
         <div className="info-blokovi">
+          <div className="info-blok">
+            <IkonaList />
+            <div>
+              <strong>{materijal.naziv}</strong>
+              <span className="sporedno mali">
+                {materijal.opis}
+                {p.materijalNapomena && ` ${p.materijalNapomena}`}
+              </span>
+            </div>
+          </div>
           <div className="info-blok">
             <IkonaKist />
             <div>

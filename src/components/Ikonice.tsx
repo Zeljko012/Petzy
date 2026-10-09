@@ -128,3 +128,12 @@ export function IkonaKist({ className }: P) {
     </svg>
   );
 }
+
+export function IkonaList({ className }: P) {
+  return (
+    <svg {...osnova} className={className}>
+      <path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14H5Z" />
+      <path d="M5 19c3-4 6-7 10-9" />
+    </svg>
+  );
+}
